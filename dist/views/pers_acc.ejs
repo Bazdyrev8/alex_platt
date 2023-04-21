@@ -1,0 +1,14 @@
+<%- include('particles/navigation_home.ejs') %>
+    <div class="center">
+        <% if(!auth){ %>
+            <a href="/logIn" class="form-button">Войти</a>
+            <a href="/register" class="form-button">Зарегистрироваться</a>
+        <% }else{ %>
+            <form action="/logout" method="post" class="form_auth">
+                <button class="form-button" type="submit" value="Создать">Выйти</button>
+            </form>
+        <% } %>
+    </div>
+
+
+    <%- include('particles/footer.ejs') %>

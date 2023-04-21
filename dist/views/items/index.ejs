@@ -1,0 +1,24 @@
+<%- include('../particles/navigation_book.ejs') %>
+
+<% for(let i = 1; i <= number; i++){ %>
+        <button onclick="document.location='?page=<%= i %>'" class="form-button" type="submit">
+            страница<%= i %> 
+        </button>
+
+<%} %>
+
+<br>
+    <% for (let i=0; i < items.length; i++) { %>
+
+        <div class="section">
+            <a href="/items/<%= items[i].id %>" class="section__title">
+                <h2 class="section__title">
+                    <%= items[i].title %>
+                </h2>
+                <img class="section__image" src="img/<%= items[i].image %>">
+            </a>
+        </div>
+
+        <% } %>
+
+            <%- include('../particles/footer.ejs') %>
