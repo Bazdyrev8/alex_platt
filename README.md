@@ -9,7 +9,7 @@
 
     Create file .env in the root directory and add the DB configuration
 
-        DATABASE_URL="mysql://root:secret@localhost:3306/nature2"
+        DATABASE_URL="mysql://root:secret@localhost:3306/alex_platt"
 
     Perform database migration from the ORM Prisma configuration
 
@@ -27,7 +27,7 @@
 
     Создать файл .env в корневом каталоге и добавить конфигурацию БД
 
-        DATABASE_URL="mysql://root:secret@localhost:3306/nature2"
+        DATABASE_URL="mysql://root:secret@localhost:3306/alex_platt"
 
     Выполнить миграцию БД из конфигурации ORM Prisma
 
