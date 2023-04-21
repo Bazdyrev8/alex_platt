@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Alex Platt bookstore
     Projects bookstore Alex Platt
 
@@ -10,7 +9,7 @@
 
     Create file .env in the root directory and add the DB configuration
 
-        DATABASE_URL="mysql://root:secret@localhost:3306/nature2"
+        DATABASE_URL="mysql://root:secret@localhost:3306/alex_platt"
 
     Perform database migration from the ORM Prisma configuration
 
@@ -19,22 +18,21 @@
     Starting the Web server
 
         npm run dev
-=======
+
 # Настройка проекта
 
-Установка зависимостей
+    Установка зависимостей
 
-    npm install
+        npm install
 
-Создать файл .env в корневом каталоге и добавить конфигурацию БД
+    Создать файл .env в корневом каталоге и добавить конфигурацию БД
 
-    DATABASE_URL="mysql://root:secret@localhost:3306/nature2"
+        DATABASE_URL="mysql://root:secret@localhost:3306/alex_platt"
 
-Выполнить миграцию БД из конфигурации ORM Prisma
+    Выполнить миграцию БД из конфигурации ORM Prisma
 
-    npx prisma migrate dev
+        npx prisma migrate dev
+        
+    Запуск веб-сервера
 
-Запуск веб-сервера
-
-    npm run dev
->>>>>>> cc448be (V2)
+        npm run dev
