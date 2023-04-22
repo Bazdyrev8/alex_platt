@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { items, PrismaClient } from '@prisma/client';
 import { type } from 'os';
+// import * as fs from 'fs';
+
 
 const prisma: PrismaClient = new PrismaClient();
 
@@ -28,6 +30,27 @@ export class ItemsController {
         });
 
     }
+
+    // async copyFileFolder(req: Request, res: Response) {
+    //     console.log("copppppy");
+    //     const { file } = req.body;
+    //     const targetFolder = './public/img/';
+      
+    //     if (file) {
+    //       const sourcePath = file.path;
+    //       const targetPath = targetFolder + file.originalname;
+          
+    //       fs.copyFile(sourcePath, targetPath, (err: any) => {
+    //           if (err) throw err;
+    //           console.log('File copied to ' + targetPath);
+    //        //   Дополнительная обработка загруженного файла
+    //           // ...
+    //           res.send('File uploaded successfully');
+    //         });
+    //     } else {
+    //       res.status(400).send('No file uploaded');
+    //     }
+    // }
 
     async category(req: Request, res: Response) {
         const items: items[] = await prisma.items.findMany();
@@ -68,6 +91,12 @@ export class ItemsController {
     }
 
     async store(req: Request, res: Response) {
+    // const selectElement: any = document.querySelector(".ice-cream");
+
+    // selectElement.addEventListener("change", (event: Event) => {
+    //   const result: any = document.querySelector(".result");
+    //   result.textContent = `You like ${(event.target as HTMLInputElement).value}`;
+    // }); 
 
         const { title, image, categ_id, description } = req.body;
         await prisma.items.create({
