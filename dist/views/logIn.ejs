@@ -1,7 +1,5 @@
 <%- include('particles/navigation_home.ejs') %>
 
-<script src="/public/js/form.js"></script>
-
   <div class="form">
 
     <ul class="tab-group">
@@ -10,14 +8,14 @@
     </ul>
 
     <div class="tab-content">
-      <h1>С возвращением!</h1>
+      <h2>С возвращением!</h2>
       <form action="/auth" method="post">
 
         <div class="field-wrap">
           <label class="form-group__label" for="text">
 
           </label>
-          <input type="text" id="title" name="name" required autocomplete="off" placeholder="Name" />
+          <input type="text" id="title" name="username" required autocomplete="off" placeholder="Name" />
         </div>
 
         <div class="field-wrap">

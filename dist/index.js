@@ -59,6 +59,18 @@ app.post("/auth", (req, res) => {
 app.post("/registration", (req, res) => {
     authController.SignUp(req, res);
 });
+app.post("/update_password", (req, res) => {
+    authController.updatePassword(req, res);
+});
+app.get("/update_password", (req, res) => {
+    authController.updatePassword(req, res);
+});
+app.post("/destroy_account", (req, res) => {
+    authController.destroyAccount(req, res);
+});
+app.get("/destroy_account", (req, res) => {
+    authController.destroyAccount(req, res);
+});
 app.post("/logout", (req, res) => {
     authController.logout(req, res);
 });

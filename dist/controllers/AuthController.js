@@ -18,10 +18,11 @@ class AuthController {
     SignIn(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             errUsername = 0;
-            const { name, password } = req.body;
+            const { username, password } = req.body;
+            req.session.username = username;
             const selectUsername = yield prisma.users.findMany({
                 where: {
-                    username: name,
+                    username: username,
                     password: password,
                 },
             });
@@ -29,20 +30,23 @@ class AuthController {
                 req.session.admin = false;
                 req.session.auth = false;
                 errUsername = 1;
-                this.logIn_err(req, res);
+                this.logIn_page(req, res);
             }
             req.session.admin = false;
             const typeUsername = yield prisma.users.findMany({
                 where: {
-                    username: name,
+                    username: username,
                     password: password,
                     type: "A"
                 },
             });
             if (typeUsername.length > 0) {
                 req.session.admin = true;
+                req.session.username = username;
             }
             if (selectUsername.length > 0) {
+                req.session.username = username;
+                req.session.password = password;
                 errUsername = 0;
                 req.session.auth = true;
                 this.logIn(req, res);
@@ -53,36 +57,38 @@ class AuthController {
         res.render('pers_acc', {
             auth: req.session.auth,
             admin: req.session.admin,
+            username: req.session.username,
+            password: req.session.password,
             errUsername: errUsername
         });
     }
-    logIn_err(req, res) {
-        res.render('logIn', {
-            auth: req.session.auth,
-            admin: req.session.admin,
-            errUsername: errUsername
-        });
-    }
+    // logIn_err(req: Request, res: Response) {
+    //     res.render('logIn', {
+    //         auth: req.session.auth,
+    //         admin: req.session.admin,
+    //         username: req.session.username,
+    //         errUsername: errUsername
+    //     });
+    // }
     logIn_page(req, res) {
         req.session.admin = false;
         req.session.auth = false;
-        errUsername = 0;
         res.render('logIn', {
             auth: req.session.auth,
             admin: req.session.admin,
+            username: req.session.username,
             errUsername: errUsername
         });
+        errUsername = 0;
     }
     //REGISTRATION
     SignUp(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             errUsername = 0;
-            const { name, password } = req.body;
-            console.log(name);
-            console.log(password);
+            const { username, password } = req.body;
             const selectUsername = yield prisma.users.findMany({
                 where: {
-                    username: name,
+                    username: username,
                 }
             });
             console.log(selectUsername);
@@ -90,16 +96,18 @@ class AuthController {
                 req.session.admin = false;
                 req.session.auth = false;
                 errUsername = 1;
-                this.reg_err(req, res);
+                this.reg_page(req, res);
             }
             if (selectUsername.length == 0) {
                 yield prisma.users.create({
                     data: {
-                        username: name,
+                        username: username,
                         password: password,
                         type: "U"
                     }
                 });
+                req.session.username = username;
+                req.session.password = password;
                 req.session.admin = false;
                 req.session.auth = true;
                 errUsername = 0;
@@ -111,41 +119,109 @@ class AuthController {
         res.render('pers_acc', {
             auth: req.session.auth,
             admin: req.session.admin,
+            username: req.session.username,
+            password: req.session.password,
             errUsername: errUsername
         });
     }
-    reg_err(req, res) {
-        res.render('registration', {
-            auth: req.session.auth,
-            admin: req.session.admin,
-            errUsername: errUsername
-        });
-    }
+    // reg_err(req: Request, res: Response) {
+    //     res.render('registration', {
+    //         auth: req.session.auth,
+    //         admin: req.session.admin,
+    //         errUsername: errUsername
+    //     });
+    // }
     reg_page(req, res) {
         req.session.admin = false;
         req.session.auth = false;
-        errUsername = 0;
         res.render('registration', {
             auth: req.session.auth,
             admin: req.session.admin,
             errUsername: errUsername
         });
+        errUsername = 0;
+    }
+    //UPDATE_PASSWORD
+    updatePassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            errUsername = 0;
+            const { currentPassword, newPassword } = req.body;
+            const selectUsernamePassword = yield prisma.users.findMany({
+                where: {
+                    username: req.session.username,
+                    password: currentPassword,
+                }
+            });
+            if (selectUsernamePassword.length == 0) {
+                errUsername = 11;
+                this.pers_acc(req, res);
+            }
+            if (selectUsernamePassword.length > 0) {
+                const idUser_updatePassword = selectUsernamePassword[0].id;
+                yield prisma.users.update({
+                    where: {
+                        id: idUser_updatePassword,
+                    },
+                    data: {
+                        password: newPassword,
+                    }
+                });
+                errUsername = 12;
+                this.pers_acc(req, res);
+            }
+        });
+    }
+    destroyAccount(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            errUsername = 0;
+            const { currentPassword } = req.body;
+            const selectUsernamePassword = yield prisma.users.findMany({
+                where: {
+                    username: req.session.username,
+                    password: currentPassword,
+                }
+            });
+            if (selectUsernamePassword.length == 0) {
+                errUsername = 21;
+                this.pers_acc(req, res);
+            }
+            if (selectUsernamePassword.length > 0) {
+                const idUser_updatePassword = selectUsernamePassword[0].id;
+                yield prisma.users.deleteMany({
+                    where: {
+                        id: idUser_updatePassword,
+                    },
+                });
+                errUsername = 0;
+                req.session.auth = false;
+                req.session.admin = false;
+                // ???????????
+                // req.session.username = "";
+                // req.session.password = "";
+                // ???????????
+                this.pers_acc(req, res);
+            }
+        });
     }
     pers_acc(req, res) {
-        // console.log(req.session.auth);
-        res.render('pers_acc', {
-            auth: req.session.auth,
-            admin: req.session.admin
-        });
+        if (req.session.auth == false) {
+            this.reg_page(req, res);
+        }
+        else {
+            res.render('pers_acc', {
+                auth: req.session.auth,
+                admin: req.session.admin,
+                username: req.session.username,
+                errUsername: errUsername,
+            });
+            errUsername = 0;
+        }
     }
     logout(req, res) {
         req.session.auth = false;
         req.session.admin = false;
         errUsername = 0;
-        res.render('pers_acc', {
-            auth: req.session.auth,
-            admin: req.session.admin
-        });
+        this.logIn_page(req, res);
     }
 }
 exports.AuthController = AuthController;

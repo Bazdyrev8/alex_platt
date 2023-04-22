@@ -1,14 +1,59 @@
 <%- include('particles/navigation_home.ejs') %>
-    <div class="center">
-        <% if(!auth){ %>
-            <a href="/logIn" class="form-button">Войти</a>
-            <a href="/register" class="form-button">Зарегистрироваться</a>
-        <% }else{ %>
+    <!-- <div class="center"> -->
+    <div class="form">
+
+        <ul class="tab-group">
+            <li class="tab active"><a href="/pers_acc">Аккаунт</a></li>
             <form action="/logout" method="post" class="form_auth">
-                <button class="form-button" type="submit" value="Создать">Выйти</button>
+                <li class="tab"><button type="submit" value="Создать">Выйти</button></li>
             </form>
-        <% } %>
+        </ul>
+
+        <div class="tab-content">
+            <h2>Личный кабинет</h2>
+
+            <div class="field-wrap">
+                <h5>Имя пользователя</h4>
+                    <p class="form-group__user" for="text">
+                        <%=username%>
+                    </p>
+            </div>
+
+            <form action="/update_password" method="post">
+                <h2>Смена пароля</h2>
+                <div class="field-wrap">
+                    <h5>Текущий пароль</h5>
+                    <label class="form-group__label" for="password">
+                    </label>
+                    <input type="password" id="password" name="currentPassword" required autocomplete="off"
+                        placeholder="currentPassword" />
+                    <h5>Новый пароль</h5>
+                    <label class="form-group__label" for="password">
+                    </label>
+                    <input type="password" id="password" name="newPassword" required autocomplete="off"
+                        placeholder="newPassword" />
+                </div>
+                <% if(errUsername == 11){%>
+                    <h4>Не правильный пароль</h4>
+                <%}%>
+                <% if(errUsername == 12){%>
+                    <h4>Вы успешно поменяли пароль</h4>
+                <%}%>
+                <button type="submit" class="button button-block">Обновить</button>
+            </form>
+            <form action="/destroy_account" mrtod="post">
+                <h2>Удаление аккаунта</h2>
+                <div class="field-wrap">
+                    <h5>Текущий пароль</h5>
+                    <labelc class="form-group__label" for="password">
+                    </label>
+                    <input type="password" id="password" name="currentPassword" required autocomplete="off" placeholder="CurrentPassword">
+                </div>
+                <% if(errUsername == 21){%>
+                    <h4>Не правильный пароль</h4>
+                <%}%>
+                <button type="submit" class="button button-block">Удалить</button>
+            </form>
+        </div>
     </div>
-
-
     <%- include('particles/footer.ejs') %>

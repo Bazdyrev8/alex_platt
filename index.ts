@@ -16,8 +16,8 @@ app.set('views', path.join(__dirname, 'views'));
 declare module "express-session" {
   interface SessionData {
     auth: boolean,
-    name: String,
-    password: String
+    username: String,
+    password: String,
     admin: boolean,
   }
 };
@@ -79,6 +79,22 @@ app.post("/auth", (req:Request,res:Response) =>{
 
 app.post("/registration", (req:Request,res:Response) =>{
   authController.SignUp(req,res);
+});
+
+app.post("/update_password", (req:Request, res:Response) => {
+  authController.updatePassword(req, res);
+});
+
+app.get("/update_password", (req:Request, res:Response) => {
+  authController.updatePassword(req, res);
+});
+
+app.post("/destroy_account", (req:Request, res:Response) =>{
+  authController.destroyAccount(req, res);
+});
+
+app.get("/destroy_account", (req:Request, res:Response) =>{
+  authController.destroyAccount(req, res);
 });
 
 app.post("/logout", (req: Request, res: Response) => {

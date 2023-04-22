@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ItemsController = void 0;
 const client_1 = require("@prisma/client");
+// import * as fs from 'fs';
 const prisma = new client_1.PrismaClient();
 class ItemsController {
     index(req, res) {

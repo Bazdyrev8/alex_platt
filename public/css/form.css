@@ -17,14 +17,35 @@
  a:hover {
   color: rgb(120, 120, 120);
 }
+
+button {
+  text-decoration: none;
+  color: rgb(60,60,60);
+  transition: 0.5s ease;
+}
+ button:hover {
+  color: rgb(120, 120, 120);
+}
+
  .form {
   background: rgba(19, 35, 47, .9);
   padding: 40px;
   max-width: 600px;
-  margin: 40px auto;
+  margin: 30px auto;
   border-radius: 4px;
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, .3);
 }
+
+.form-group__user {
+  display: block;
+  position: relative;
+  width: 100%;
+  color:#fff;
+  border: 1px solid #a0b3b0 ;
+  padding: 5px;
+  margin:0px;
+}
+
  .tab-group {
   color:rgb(60, 60, 60);
   list-style: none;
@@ -57,15 +78,53 @@
   background: rgb(60,60,60);
   color: #fff;
 }
+
+.tab-group li button {
+  display: block;
+  text-decoration: none;
+  padding: 15px;
+  background: rgba(160, 179, 176, .25);
+  color: #a0b3b0;
+  font-size: 20px;
+  float: left;
+  width: 50%;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.5s ease;
+  border: none;
+}
+
+.tab-group li button:hover {
+  background: rgb(120, 120, 120);
+  color: #fff;
+}
+ .tab-group .active button {
+  background: rgb(60,60,60);
+  color: #fff;
+}
+
  .tab-content > div:last-child {
   display: none;
 }
- h1 {
+ h2 {
   text-align: center;
-  color: #fff;
+  color: #EEE;
   font-weight: 300;
-  margin: 0 0 40px;
+  margin: 20px 0 20px;
 }
+h4 {
+  text-align: center;
+  color: #DDD;
+  font-weight: 300;
+  margin: 10px 0 10px;
+}
+h5 {
+  text-align: left;
+  color: #AAA;
+  font-weight: 300;
+  margin: 20px 0 5px;
+}
+
  label {
   position: absolute;
   transform: translateY(6px);
@@ -107,8 +166,9 @@
 }
  .field-wrap {
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
+
  .top-row:after {
   content: "";
   display: table;
@@ -142,6 +202,7 @@
  .button-block {
   display: block;
   width: 100%;
+  margin: 5px 0 5px;
 }
  .forgot {
   margin-top: -20px;
