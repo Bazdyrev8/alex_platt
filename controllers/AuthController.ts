@@ -82,8 +82,8 @@ export class AuthController {
                 username: req.session.username,
                 errUsername: errUsername
             });
-            errUsername = 0;
-        }
+        errUsername = 0;
+    }
 
     //REGISTRATION
     async SignUp(req: Request, res: Response) {
@@ -142,7 +142,7 @@ export class AuthController {
     reg_page(req: Request, res: Response) {
         req.session.admin = false;
         req.session.auth = false;
-        
+
         res.render('registration',
             {
                 auth: req.session.auth,
@@ -220,9 +220,7 @@ export class AuthController {
     }
 
     pers_acc(req: Request, res: Response) {
-        if (req.session.auth == false) {
-            this.reg_page(req, res);
-        } else {
+        if (req.session.auth == true) {
             res.render('pers_acc',
                 {
                     auth: req.session.auth,
@@ -231,6 +229,8 @@ export class AuthController {
                     errUsername: errUsername,
                 });
             errUsername = 0;
+        } else {
+            this.logIn_page(req, res);
         }
     }
 

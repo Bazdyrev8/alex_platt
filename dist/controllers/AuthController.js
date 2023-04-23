@@ -204,10 +204,7 @@ class AuthController {
         });
     }
     pers_acc(req, res) {
-        if (req.session.auth == false) {
-            this.reg_page(req, res);
-        }
-        else {
+        if (req.session.auth == true) {
             res.render('pers_acc', {
                 auth: req.session.auth,
                 admin: req.session.admin,
@@ -215,6 +212,9 @@ class AuthController {
                 errUsername: errUsername,
             });
             errUsername = 0;
+        }
+        else {
+            this.logIn_page(req, res);
         }
     }
     logout(req, res) {
