@@ -28,8 +28,8 @@ app.listen(1415, () => {
   console.log('Server is running on port 1415');
 });
 
-app.get("/", (req: Request, res: Response) => {
-  res.render('home');
+app.get("", (req: Request, res: Response) => {
+  itemsController.home(req, res);
 });
 
 app.get("/items", (req: Request, res: Response) => {
@@ -96,6 +96,22 @@ app.post("/destroy_account", (req:Request, res:Response) =>{
 app.get("/destroy_account", (req:Request, res:Response) =>{
   authController.destroyAccount(req, res);
 });
+
+app.get("/create_admin", (req: Request, res: Response) =>{
+  authController.createAdmin(req,res);
+});
+
+// app.post("/create_admin", (req: Request, res: Response) =>{
+//   authController.createAdmin(req,res);
+// });
+
+app.post("/create_admin", (req:Request, res:Response) =>{
+  authController.createAdminAccount(req, res);
+});
+
+// app.get("/create_adminAccount", (req:Request, res:Response) =>{
+//   authController.createAdminAccount(req, res);
+// });
 
 app.post("/logout", (req: Request, res: Response) => {
   authController.logout(req, res);

@@ -8,6 +8,11 @@ const prisma: PrismaClient = new PrismaClient();
 
 export class ItemsController {
 
+    home(req:Request, res: Response){
+        res.render('home', {
+            admin: req.session.admin
+        });
+    }
     async index(req: Request, res: Response) {
         let page = Number(req.query.page); // localhost?page=4
         const count = await prisma.items.count({

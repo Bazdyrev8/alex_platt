@@ -7,7 +7,6 @@ const prisma: PrismaClient = new PrismaClient();
 
 let errUsername = 0;
 
-
 export class AuthController {
 
     //LOGIN
@@ -62,15 +61,6 @@ export class AuthController {
             errUsername: errUsername
         });
     }
-
-    // logIn_err(req: Request, res: Response) {
-    //     res.render('logIn', {
-    //         auth: req.session.auth,
-    //         admin: req.session.admin,
-    //         username: req.session.username,
-    //         errUsername: errUsername
-    //     });
-    // }
 
     logIn_page(req: Request, res: Response) {
         req.session.admin = false;
@@ -131,14 +121,6 @@ export class AuthController {
         });
     }
 
-    // reg_err(req: Request, res: Response) {
-    //     res.render('registration', {
-    //         auth: req.session.auth,
-    //         admin: req.session.admin,
-    //         errUsername: errUsername
-    //     });
-    // }
-
     reg_page(req: Request, res: Response) {
         req.session.admin = false;
         req.session.auth = false;
@@ -195,6 +177,7 @@ export class AuthController {
             }
         });
 
+
         if (selectUsernamePassword.length == 0) {
             errUsername = 21;
             this.pers_acc(req, res);
@@ -211,10 +194,6 @@ export class AuthController {
             errUsername = 0;
             req.session.auth = false;
             req.session.admin = false;
-            // ???????????
-            // req.session.username = "";
-            // req.session.password = "";
-            // ???????????
             this.pers_acc(req, res);
         }
     }
@@ -234,10 +213,49 @@ export class AuthController {
         }
     }
 
+
     logout(req: Request, res: Response) {
         req.session.auth = false;
         req.session.admin = false;
         errUsername = 0;
         this.logIn_page(req, res);
+    }
+
+    async createAdminAccount(req: Request, res: Response) {
+        errUsername = 0;
+        const { username, password } = req.body;
+
+        const selectUsername = await prisma.users.findMany({
+            where: {
+                username: username,
+            }
+        });
+
+        if (selectUsername.length > 0) {
+            errUsername = 1;
+        }
+
+        if (selectUsername.length == 0) {
+            await prisma.users.create({
+                data: {
+                    username: username,
+                    password: password,
+                    type: "A"
+                }
+            });
+            errUsername = 0;
+        }
+
+        this.createAdmin(req, res);
+    }
+
+    createAdmin(req: Request, res: Response) {
+        res.render('create_admin',
+            {
+                auth: req.session.auth,
+                admin: req.session.admin,
+                errUsername: errUsername,
+            });
+        errUsername = 0;
     }
 }

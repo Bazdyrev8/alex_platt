@@ -223,5 +223,40 @@ class AuthController {
         errUsername = 0;
         this.logIn_page(req, res);
     }
+    createAdminAccount(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            errUsername = 0;
+            const { username, password } = req.body;
+            const selectUsername = yield prisma.users.findMany({
+                where: {
+                    username: username,
+                }
+            });
+            if (selectUsername.length > 0) {
+                errUsername = 1;
+            }
+            if (selectUsername.length == 0) {
+                yield prisma.users.create({
+                    data: {
+                        username: username,
+                        password: password,
+                        type: "A"
+                    }
+                });
+                errUsername = 0;
+            }
+            req.session.admin = true;
+            req.session.auth = true;
+            this.createAdmin(req, res);
+        });
+    }
+    createAdmin(req, res) {
+        res.render('create_admin', {
+            auth: req.session.auth,
+            admin: req.session.admin,
+            errUsername: errUsername,
+        });
+        errUsername = 0;
+    }
 }
 exports.AuthController = AuthController;

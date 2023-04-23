@@ -1,0 +1,28 @@
+<%- include('particles/navigation_home.ejs') %>
+
+  <div class="form">
+
+    <div class="tab-content">
+      <form action="/create_admin" method="post">
+        <h2>Создайте аккаунт админа</h2>
+        <div class="field-wrap">
+          <label class="form-group__label" for="text">
+          </label>
+          <input type="text" id="title" name="username" required autocomplete="off" placeholder="Name" />
+        </div>
+
+        <div class="field-wrap">
+          <label class="form-group__label" for="password">
+          </label>
+          <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password" />
+        </div>
+
+        <% if (errUsername==1){ %>
+          <p class="errUsername">Это имя пользователя уже занято</p>
+        <% } %>
+
+        <button type="submit" class="button button-block">Создать</button>
+
+      </form>
+    </div>
+    <%- include('particles/footer.ejs') %>

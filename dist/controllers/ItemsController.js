@@ -14,6 +14,11 @@ const client_1 = require("@prisma/client");
 // import * as fs from 'fs';
 const prisma = new client_1.PrismaClient();
 class ItemsController {
+    home(req, res) {
+        res.render('home', {
+            admin: req.session.admin
+        });
+    }
     index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let page = Number(req.query.page); // localhost?page=4
