@@ -250,12 +250,18 @@ export class AuthController {
     }
 
     createAdmin(req: Request, res: Response) {
-        res.render('create_admin',
-            {
-                auth: req.session.auth,
+        if (req.session.admin == true) {
+            res.render('create_admin',
+                {
+                    auth: req.session.auth,
+                    admin: req.session.admin,
+                    errUsername: errUsername,
+                });
+        }else{
+            res.render('home',{
                 admin: req.session.admin,
-                errUsername: errUsername,
             });
+        }
         errUsername = 0;
     }
 }

@@ -8,7 +8,7 @@ const prisma: PrismaClient = new PrismaClient();
 
 export class ItemsController {
 
-    home(req:Request, res: Response){
+    home(req: Request, res: Response) {
         res.render('home', {
             admin: req.session.admin
         });
@@ -40,11 +40,11 @@ export class ItemsController {
     //     console.log("copppppy");
     //     const { file } = req.body;
     //     const targetFolder = './public/img/';
-      
+
     //     if (file) {
     //       const sourcePath = file.path;
     //       const targetPath = targetFolder + file.originalname;
-          
+
     //       fs.copyFile(sourcePath, targetPath, (err: any) => {
     //           if (err) throw err;
     //           console.log('File copied to ' + targetPath);
@@ -86,66 +86,70 @@ export class ItemsController {
 
 
     async create(req: Request, res: Response) {
+        if (req.session.admin) {
+            const categories = await prisma.categories.findMany();
 
-        const categories = await prisma.categories.findMany();
-
-        res.render('items/create', {
-            categories: categories,
-            admin: req.session.admin
-        });
+            res.render('items/create', {
+                categories: categories,
+                admin: req.session.admin
+            });
+        } else {
+            res.render('home', {
+                admin: req.session.admin
+            });
+        }
     }
 
     async store(req: Request, res: Response) {
-    // const selectElement: any = document.querySelector(".ice-cream");
+            // const selectElement: any = document.querySelector(".ice-cream");
 
-    // selectElement.addEventListener("change", (event: Event) => {
-    //   const result: any = document.querySelector(".result");
-    //   result.textContent = `You like ${(event.target as HTMLInputElement).value}`;
-    // }); 
+            // selectElement.addEventListener("change", (event: Event) => {
+            //   const result: any = document.querySelector(".result");
+            //   result.textContent = `You like ${(event.target as HTMLInputElement).value}`;
+            // }); 
+            const { title, image, categ_id, description } = req.body;
+            await prisma.items.create({
+                data: {
+                    title,
+                    image,
+                    category: {
+                        connect: {
+                            id: Number(categ_id)
+                        }
+                    },
+                    description,
+                    // categ_id: Number(categ_id),
+                }
+            });
 
-        const { title, image, categ_id, description } = req.body;
-        await prisma.items.create({
-            data: {
-                title,
-                image,
-                category:{
-                    connect: {
-                        id: Number(categ_id)
-                    }
-                },
-                description,
-                // categ_id: Number(categ_id),
-            }
-        });
-
-        res.redirect('/');
-    }
+            res.redirect('/');
+        }
 
     async destroy(req: Request, res: Response) {
-        const { id } = req.body;
+            const { id } = req.body;
 
-        await prisma.items.deleteMany({
-            where: {
-                id: Number(id)
-            }
-        });
+            await prisma.items.deleteMany({
+                where: {
+                    id: Number(id)
+                }
+            });
 
-        res.redirect('/');
-    }
+            res.redirect('/');
+        }
 
     async update(req: Request, res: Response) {
-        const { id, title, image, description } = req.body;
-        await prisma.items.update({
-            where: {
-                id: Number(id)
-            },
-            data: {
-                title,
-                image,
-                description,
-            }
-        });
+            const { id, title, image, description } = req.body;
+            await prisma.items.update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    title,
+                    image,
+                    description,
+                }
+            });
 
-        res.redirect('/');
+            res.redirect('/');
+        }
     }
-}

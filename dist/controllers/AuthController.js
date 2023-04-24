@@ -62,14 +62,6 @@ class AuthController {
             errUsername: errUsername
         });
     }
-    // logIn_err(req: Request, res: Response) {
-    //     res.render('logIn', {
-    //         auth: req.session.auth,
-    //         admin: req.session.admin,
-    //         username: req.session.username,
-    //         errUsername: errUsername
-    //     });
-    // }
     logIn_page(req, res) {
         req.session.admin = false;
         req.session.auth = false;
@@ -124,13 +116,6 @@ class AuthController {
             errUsername: errUsername
         });
     }
-    // reg_err(req: Request, res: Response) {
-    //     res.render('registration', {
-    //         auth: req.session.auth,
-    //         admin: req.session.admin,
-    //         errUsername: errUsername
-    //     });
-    // }
     reg_page(req, res) {
         req.session.admin = false;
         req.session.auth = false;
@@ -195,10 +180,6 @@ class AuthController {
                 errUsername = 0;
                 req.session.auth = false;
                 req.session.admin = false;
-                // ???????????
-                // req.session.username = "";
-                // req.session.password = "";
-                // ???????????
                 this.pers_acc(req, res);
             }
         });
@@ -245,17 +226,22 @@ class AuthController {
                 });
                 errUsername = 0;
             }
-            req.session.admin = true;
-            req.session.auth = true;
             this.createAdmin(req, res);
         });
     }
     createAdmin(req, res) {
-        res.render('create_admin', {
-            auth: req.session.auth,
-            admin: req.session.admin,
-            errUsername: errUsername,
-        });
+        if (req.session.admin == true) {
+            res.render('create_admin', {
+                auth: req.session.auth,
+                admin: req.session.admin,
+                errUsername: errUsername,
+            });
+        }
+        else {
+            res.render('home', {
+                admin: req.session.admin,
+            });
+        }
         errUsername = 0;
     }
 }

@@ -89,11 +89,18 @@ class ItemsController {
     }
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const categories = yield prisma.categories.findMany();
-            res.render('items/create', {
-                categories: categories,
-                admin: req.session.admin
-            });
+            if (req.session.admin) {
+                const categories = yield prisma.categories.findMany();
+                res.render('items/create', {
+                    categories: categories,
+                    admin: req.session.admin
+                });
+            }
+            else {
+                res.render('home', {
+                    admin: req.session.admin
+                });
+            }
         });
     }
     store(req, res) {
