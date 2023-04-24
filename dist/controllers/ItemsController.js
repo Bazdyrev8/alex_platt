@@ -97,9 +97,7 @@ class ItemsController {
                 });
             }
             else {
-                res.render('home', {
-                    admin: req.session.admin
-                });
+                res.redirect('/');
             }
         });
     }

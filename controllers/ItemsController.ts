@@ -94,9 +94,7 @@ export class ItemsController {
                 admin: req.session.admin
             });
         } else {
-            res.render('home', {
-                admin: req.session.admin
-            });
+            res.redirect('/');
         }
     }
 

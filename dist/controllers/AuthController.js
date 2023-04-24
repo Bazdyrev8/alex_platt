@@ -238,9 +238,7 @@ class AuthController {
             });
         }
         else {
-            res.render('home', {
-                admin: req.session.admin,
-            });
+            res.redirect('/');
         }
         errUsername = 0;
     }
