@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ItemsController = void 0;
 const client_1 = require("@prisma/client");
-// import * as fs from 'fs';
+const fs = require('fs');
 const prisma = new client_1.PrismaClient();
 class ItemsController {
     home(req, res) {
@@ -32,8 +32,6 @@ class ItemsController {
                 take: 4,
                 skip: (page - 1) * 4,
             });
-            console.log(items);
-            console.log(pages);
             const categories = yield prisma.categories.findMany();
             res.render('items/index', {
                 'items': items,
@@ -43,24 +41,6 @@ class ItemsController {
             });
         });
     }
-    // async copyFileFolder(req: Request, res: Response) {
-    //     console.log("copppppy");
-    //     const { file } = req.body;
-    //     const targetFolder = './public/img/';
-    //     if (file) {
-    //       const sourcePath = file.path;
-    //       const targetPath = targetFolder + file.originalname;
-    //       fs.copyFile(sourcePath, targetPath, (err: any) => {
-    //           if (err) throw err;
-    //           console.log('File copied to ' + targetPath);
-    //        //   Дополнительная обработка загруженного файла
-    //           // ...
-    //           res.send('File uploaded successfully');
-    //         });
-    //     } else {
-    //       res.status(400).send('No file uploaded');
-    //     }
-    // }
     category(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const items = yield prisma.items.findMany();
@@ -102,17 +82,14 @@ class ItemsController {
         });
     }
     store(req, res) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            // const selectElement: any = document.querySelector(".ice-cream");
-            // selectElement.addEventListener("change", (event: Event) => {
-            //   const result: any = document.querySelector(".result");
-            //   result.textContent = `You like ${(event.target as HTMLInputElement).value}`;
-            // }); 
-            const { title, image, categ_id, description } = req.body;
+            const { title, categ_id, description } = req.body;
+            console.log(String((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname));
             yield prisma.items.create({
                 data: {
                     title,
-                    image,
+                    image: String((_b = req.file) === null || _b === void 0 ? void 0 : _b.originalname),
                     category: {
                         connect: {
                             id: Number(categ_id)
@@ -122,7 +99,7 @@ class ItemsController {
                     // categ_id: Number(categ_id),
                 }
             });
-            res.redirect('/');
+            res.redirect('/items');
         });
     }
     destroy(req, res) {

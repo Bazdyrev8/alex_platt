@@ -1,33 +1,41 @@
 @import "compass/css3";
- *, *:before, *:after {
+
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
- html {
+
+html {
   overflow-y: scroll;
 }
- body {
+
+body {
   background: #c1bdba;
   font-family: 'Titillium Web', sans-serif;
 }
- a {
+
+a {
   text-decoration: none;
-  color: rgb(60,60,60);
+  color: rgb(60, 60, 60);
   transition: 0.5s ease;
 }
- a:hover {
+
+a:hover {
   color: rgb(120, 120, 120);
 }
 
 button {
   text-decoration: none;
-  color: rgb(60,60,60);
+  color: rgb(60, 60, 60);
   transition: 0.5s ease;
 }
- button:hover {
+
+button:hover {
   color: rgb(120, 120, 120);
 }
 
- .form {
+.form {
   background: rgba(19, 35, 47, .9);
   padding: 40px;
   max-width: 600px;
@@ -40,24 +48,26 @@ button {
   display: block;
   position: relative;
   width: 100%;
-  color:#fff;
-  border: 1px solid #a0b3b0 ;
+  color: #fff;
+  border: 1px solid #a0b3b0;
   padding: 5px;
-  margin:0px;
+  margin: 0px;
 }
 
- .tab-group {
-  color:rgb(60, 60, 60);
+.tab-group {
+  color: rgb(60, 60, 60);
   list-style: none;
   padding: 0;
   margin: 0 0 40px 0;
 }
- .tab-group:after {
+
+.tab-group:after {
   content: "";
   display: table;
   clear: both;
 }
- .tab-group li a {
+
+.tab-group li a {
   display: block;
   text-decoration: none;
   padding: 15px;
@@ -70,12 +80,14 @@ button {
   cursor: pointer;
   transition: 0.5s ease;
 }
- .tab-group li a:hover {
+
+.tab-group li a:hover {
   background: rgb(120, 120, 120);
   color: #fff;
 }
- .tab-group .active a {
-  background: rgb(60,60,60);
+
+.tab-group .active a {
+  background: rgb(60, 60, 60);
   color: #fff;
 }
 
@@ -98,26 +110,30 @@ button {
   background: rgb(120, 120, 120);
   color: #fff;
 }
- .tab-group .active button {
-  background: rgb(60,60,60);
+
+.tab-group .active button {
+  background: rgb(60, 60, 60);
   color: #fff;
 }
 
- .tab-content > div:last-child {
+.tab-content>div:last-child {
   display: none;
 }
- h2 {
+
+h2 {
   text-align: center;
   color: #EEE;
   font-weight: 300;
   margin: 20px 0 20px;
 }
+
 h4 {
   text-align: center;
   color: #DDD;
   font-weight: 300;
   margin: 10px 0 10px;
 }
+
 h5 {
   text-align: left;
   color: #AAA;
@@ -125,7 +141,7 @@ h5 {
   margin: 20px 0 5px;
 }
 
- label {
+label {
   position: absolute;
   transform: translateY(6px);
   left: 13px;
@@ -135,15 +151,20 @@ h5 {
   pointer-events: none;
   font-size: 22px;
 }
- label.active {
+
+
+label.active {
   transform: translateY(50px);
   left: 2px;
   font-size: 14px;
 }
- label.highlight {
+
+label.highlight {
   color: #fff;
 }
- input, textarea {
+
+input,
+textarea {
   font-size: 22px;
   display: block;
   width: 100%;
@@ -156,33 +177,40 @@ h5 {
   border-radius: 0;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
- input:focus, textarea:focus {
+
+input:focus,
+textarea:focus {
   outline: 0;
-  border-color: rgb(60,60,60);
+  border-color: rgb(60, 60, 60);
 }
- textarea {
+
+textarea {
   border: 2px solid #a0b3b0;
   resize: vertical;
 }
- .field-wrap {
+
+.field-wrap {
   position: relative;
   margin-bottom: 25px;
 }
 
- .top-row:after {
+.top-row:after {
   content: "";
   display: table;
   clear: both;
 }
- .top-row > div {
+
+.top-row>div {
   float: left;
   width: 48%;
   margin-right: 4%;
 }
- .top-row > div:last-child {
+
+.top-row>div:last-child {
   margin: 0;
 }
- .button {
+
+.button {
   border: 0;
   outline: none;
   border-radius: 0;
@@ -191,20 +219,76 @@ h5 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  background: rgb(60,60,60);
+  background: rgb(60, 60, 60);
   color: #fff;
   transition: all 0.5s ease;
   -webkit-appearance: none;
 }
- .button:hover, .button:focus {
+
+.button:hover,
+.button:focus {
   background: rgb(100, 100, 100);
 }
- .button-block {
+
+.button-block {
   display: block;
   width: 100%;
   margin: 5px 0 5px;
 }
- .forgot {
+
+.forgot {
   margin-top: -20px;
   text-align: right;
+}
+
+
+@media(width < 420px) {
+
+  .tab-group li a {
+    padding: 10px;
+    font-size: 18px;
+    transition: 0.5s ease;
+  }
+
+  .tab-group li button {
+    padding: 10px;
+    font-size: 18px;
+    float: left;
+    transition: 0.5s ease;
+    border: none;
+  }
+
+  h2 {
+    text-align: center;
+    color: #EEE;
+    font-weight: 200;
+    margin: 10px 0 20px;
+  }
+
+  h4 {
+    text-align: center;
+    color: #DDD;
+    font-weight: 200;
+    margin: 5px 0 5px;
+  }
+
+  h5 {
+    text-align: left;
+    color: #AAA;
+    font-weight: 200;
+    margin: 10px 0 5px;
+  }
+
+  .form {
+    padding: 20px;
+    width: 100%;
+    margin: 30px auto;
+  }
+
+
+  input,
+  textarea {
+    font-size: 18px;
+    padding: 3px 5px;
+  }
 }

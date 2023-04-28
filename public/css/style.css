@@ -16,35 +16,22 @@ p {
   width: 70%;
 }
 
-p.introduct {
+/* p.introduct {
   margin-left: 200px;
   margin-right: 200px;
-}
+} */
 
-p.errUsername{
+p.errUsername {
   margin: 10px 15px 10px 15px;
   font-size: 20px;
   text-indent: 30px;
   text-align: justify;
 }
 
-a.account_button{
-  width: 200px; 
+a.account_button {
+  width: 200px;
 }
 
-@media(max-width: 400px) {
-  p {
-    margin: 20px;
-    font-size: 15px;
-    text-indent: 50px;
-    text-align: justify;
-  }
-
-  p.introduct {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-}
 
 .logo {
   background-color: rgba(11, 17, 29, 1);
@@ -85,13 +72,33 @@ h1.logo_a {
   vertical-align: middle;
 }
 
-.center{
+
+@media(width < 550px) {
+  p {
+    margin: 20px;
+    font-size: 15px;
+    text-indent: 50px;
+    text-align: justify;
+  }
+
+  /* p.introduct {
+    margin-left: 20px;
+    margin-right: 20px;
+  } */
+
+  .shell {
+    width: 100%;
+    min-height: 800px;
+  }
+}
+
+.center {
   /* margin: 30px 10px 30px 10px; */
 }
 
-.shell_book{
+.shell_book {
   text-align: justify;
-  padding: 80px;
+  padding: 5px;
 }
 
 a.link {
@@ -113,7 +120,7 @@ a.link {
   background-color: #cdcdcd;
   text-align: center;
   position: relative;
-  
+
 }
 
 .shell_book p {
@@ -160,8 +167,8 @@ a.link {
 .form-button {
   color: white;
   padding: 7px 0px 7px 0px;
-  background-color: rgb(80, 80, 80); 
-  width: 225px;
+  background-color: rgb(80, 80, 80);
+  width: 125px;
   max-height: 32px;
   font-size: 16px;
   align-items: flex-start;
@@ -178,7 +185,7 @@ a.link {
   width: 215px;
 }
 
-.page_book{
+.page_book {
   align-items: center;
   text-align: center;
   background-color: rgb(80, 80, 80);
@@ -260,7 +267,7 @@ div.center {
   color: #484848;
 }
 
-@media(max-width: 599px) {
+@media(width < 600px) {
 
   .topmenu>li>a {
     padding: 0px 0px;

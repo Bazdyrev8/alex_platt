@@ -27,8 +27,8 @@ model categories {
 
 model users {
   id    Int    @id @default(autoincrement())
-  username String @db.VarChar(255)
-  password String @db.VarChar(255)
+  username String? @db.VarChar(255)
+  password String? @db.VarChar(255)
   type String @db.VarChar(2)
   // state status @relation(fields: [status_id], references: [id])
   // status_id Int

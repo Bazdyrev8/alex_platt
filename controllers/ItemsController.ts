@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { items, PrismaClient } from '@prisma/client';
 import { type } from 'os';
-// import * as fs from 'fs';
-
-
+import multer from 'multer'; 
+import path from 'path';
+const fs = require('fs');
 const prisma: PrismaClient = new PrismaClient();
 
 export class ItemsController {
@@ -24,8 +24,6 @@ export class ItemsController {
             take: 4,
             skip: (page - 1) * 4,
         })
-        console.log(items);
-        console.log(pages);
         const categories = await prisma.categories.findMany();
         res.render('items/index', {
             'items': items,
@@ -35,27 +33,6 @@ export class ItemsController {
         });
 
     }
-
-    // async copyFileFolder(req: Request, res: Response) {
-    //     console.log("copppppy");
-    //     const { file } = req.body;
-    //     const targetFolder = './public/img/';
-
-    //     if (file) {
-    //       const sourcePath = file.path;
-    //       const targetPath = targetFolder + file.originalname;
-
-    //       fs.copyFile(sourcePath, targetPath, (err: any) => {
-    //           if (err) throw err;
-    //           console.log('File copied to ' + targetPath);
-    //        //   Дополнительная обработка загруженного файла
-    //           // ...
-    //           res.send('File uploaded successfully');
-    //         });
-    //     } else {
-    //       res.status(400).send('No file uploaded');
-    //     }
-    // }
 
     async category(req: Request, res: Response) {
         const items: items[] = await prisma.items.findMany();
@@ -99,55 +76,50 @@ export class ItemsController {
     }
 
     async store(req: Request, res: Response) {
-            // const selectElement: any = document.querySelector(".ice-cream");
-
-            // selectElement.addEventListener("change", (event: Event) => {
-            //   const result: any = document.querySelector(".result");
-            //   result.textContent = `You like ${(event.target as HTMLInputElement).value}`;
-            // }); 
-            const { title, image, categ_id, description } = req.body;
-            await prisma.items.create({
-                data: {
-                    title,
-                    image,
-                    category: {
-                        connect: {
-                            id: Number(categ_id)
-                        }
-                    },
-                    description,
-                    // categ_id: Number(categ_id),
-                }
-            });
-
-            res.redirect('/');
-        }
+        const { title, categ_id, description } = req.body;
+        console.log(String(req.file?.originalname));
+        await prisma.items.create({
+            data: {
+                title,
+                image: String(req.file?.originalname),
+                category: {
+                    connect: {
+                        id: Number(categ_id)
+                    }
+                },
+                description,
+                // categ_id: Number(categ_id),
+            }
+        });
+        
+        res.redirect('/items');
+    }
 
     async destroy(req: Request, res: Response) {
-            const { id } = req.body;
+        const { id } = req.body;
 
-            await prisma.items.deleteMany({
-                where: {
-                    id: Number(id)
-                }
-            });
+        await prisma.items.deleteMany({
+            where: {
+                id: Number(id)
+            }
+        });
 
-            res.redirect('/');
-        }
+        res.redirect('/');
+    }
 
     async update(req: Request, res: Response) {
-            const { id, title, image, description } = req.body;
-            await prisma.items.update({
-                where: {
-                    id: Number(id)
-                },
-                data: {
-                    title,
-                    image,
-                    description,
-                }
-            });
+        const { id, title, image, description } = req.body;
+        await prisma.items.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                title,
+                image,
+                description,
+            }
+        });
 
-            res.redirect('/');
-        }
+        res.redirect('/');
     }
+}
