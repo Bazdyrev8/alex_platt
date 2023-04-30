@@ -3,14 +3,15 @@
     <ul class="topmenu">
         <% if(admin){ %>
             <li><a href="/items/action/create" class="topmenuA">Добавить книгу</a></li>
+            <li><a href="/categories/create" class="topmenuA">Создать категорию</a></li>
         <% } %>
         <li><a href="" class="topmenuA">Сортировать</a>
 
             <ul class="submenu">
                 <% for (let i=0; i < categories.length; i++) { %>
-                    <li class="option-categ"><a href="/items/category" class="option-categ">
+                    <!-- <li class="option-categ"><a href="/items/category/<%= categories[i].id %>" class="option-categ">
                             <%= categories[i].title %>
-                        </a></li>
+                        </a></li> -->
                     <% } %>
             </ul>
         </li>

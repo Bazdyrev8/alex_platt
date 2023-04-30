@@ -16,49 +16,39 @@ p {
   width: 70%;
 }
 
-/* p.introduct {
-  margin-left: 200px;
-  margin-right: 200px;
-} */
-
 p.errUsername {
-  margin: 10px 15px 10px 15px;
+  margin: 15px 15px 13px 15px;
   font-size: 20px;
   text-indent: 30px;
   text-align: justify;
 }
 
-a.account_button {
-  width: 200px;
-}
-
-
 .logo {
   background-color: rgba(11, 17, 29, 1);
   width: 100%;
-  min-height: 150px;
+  min-height: 50px;
   margin: 0px;
   display: inline-block;
   text-align: center;
 }
 
 a.logo_a {
-  margin: 0px;
-  margin-top: 30px;
+  /* margin: 0px; */
+  margin-top: 80px;
   margin-left: 20px;
   margin-right: 20px;
   color: #D0D0D0;
   font-size: 25px;
-  text-decoration-line: none;
+  vertical-align:middle;
 }
 
 h1.logo_a {
-  margin: 0px;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 5px;
+  margin-bottom: 10px;
   color: #FFFFFF;
   font-size: 55px;
-}
+  max-height: 30px;
+} 
 
 
 .shell {
@@ -67,29 +57,7 @@ h1.logo_a {
   min-height: 1000px;
   height: auto;
   display: inline-block;
-  /* text-align: left; */
-  display: inline-block;
   vertical-align: middle;
-}
-
-
-@media(width < 550px) {
-  p {
-    margin: 20px;
-    font-size: 15px;
-    text-indent: 50px;
-    text-align: justify;
-  }
-
-  /* p.introduct {
-    margin-left: 20px;
-    margin-right: 20px;
-  } */
-
-  .shell {
-    width: 100%;
-    min-height: 800px;
-  }
 }
 
 .center {
@@ -99,6 +67,23 @@ h1.logo_a {
 .shell_book {
   text-align: justify;
   padding: 5px;
+}
+
+@media(width < 550px) {
+  p {
+    font-size: 15px;
+    text-indent: 50px;
+    text-align: justify;
+  }
+
+  .shell {
+    width: 100%;
+    min-height: 800px;
+  }
+
+  .shell_book {
+    text-align: center;
+  }
 }
 
 a.link {
@@ -168,7 +153,7 @@ a.link {
   color: white;
   padding: 7px 0px 7px 0px;
   background-color: rgb(80, 80, 80);
-  width: 125px;
+  width: 90px;
   max-height: 32px;
   font-size: 16px;
   align-items: flex-start;
@@ -253,7 +238,7 @@ div.center {
 }
 
 .topmenu>li>a {
-  padding: 20px;
+  padding: 10px 15px 10px 15px;
   /* color: #767676; */
   text-transform: uppercase;
   font-weight: bold;

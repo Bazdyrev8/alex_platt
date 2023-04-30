@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ItemsController = void 0;
 const client_1 = require("@prisma/client");
-const fs = require('fs');
 const prisma = new client_1.PrismaClient();
+// const fs = require('fs');
 class ItemsController {
     home(req, res) {
         res.render('home', {
@@ -41,17 +41,37 @@ class ItemsController {
             });
         });
     }
+    ///!!!!!!!!!!!!!!!!!!
     category(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const items = yield prisma.items.findMany();
+            let page = Number(req.query.page); // localhost?page=4
+            const count = yield prisma.items.count({
+                where: {
+                    categ_id: Number(req.params.id)
+                }
+            });
+            let pages = Math.ceil(count / 4);
+            if (!page)
+                page = 1;
+            if (page > pages)
+                page = pages;
+            const items = yield prisma.items.findMany({
+                where: {
+                    categ_id: Number(req.params.id)
+                },
+                take: 4,
+                skip: (page - 1) * 4,
+            });
             const categories = yield prisma.categories.findMany();
-            res.render('items/category/:name', {
+            res.render('items/category', {
                 'items': items,
+                number: Number(pages),
                 categories: categories,
                 admin: req.session.admin
             });
         });
     }
+    ///!!!!!!!!!!!!!!!!!!
     show(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const item = yield prisma.items.findUnique({
@@ -65,6 +85,32 @@ class ItemsController {
                 categories: categories,
                 admin: req.session.admin
             });
+        });
+    }
+    createCategPage(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // const item = await prisma.items.findUnique({
+            //     where: {
+            //         id: Number(req.params.id)
+            //     }
+            // });
+            const categories = yield prisma.categories.findMany();
+            res.render('categories/create', {
+                categories: categories,
+                admin: req.session.admin,
+            });
+        });
+    }
+    createCateg(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { title } = req.body;
+            // const item = await prisma.items.findUnique({
+            //     where: {
+            //         id: Number(req.params.id)
+            //     }
+            // });
+            const categories = yield prisma.categories.findMany();
+            res.redirect('/items');
         });
     }
     create(req, res) {
@@ -81,6 +127,7 @@ class ItemsController {
             }
         });
     }
+    ///!!!!!!!!!!!!!!!!!!
     store(req, res) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
@@ -102,9 +149,18 @@ class ItemsController {
             res.redirect('/items');
         });
     }
+    ///!!!!!!!!!!!!!!!!!!
     destroy(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.body;
+            const { id, image } = req.body;
+            // console.log('___________________');
+            // console.log(image);
+            // console.log('___________________');
+            // let file_delete =  './' + image;
+            // fs.unlink( file_delete, (err:any)=>{
+            //     // if (err) throw err;
+            //     console.log('File deleted!');
+            // });
             yield prisma.items.deleteMany({
                 where: {
                     id: Number(id)
@@ -114,19 +170,26 @@ class ItemsController {
         });
     }
     update(req, res) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, title, image, description } = req.body;
+            const { id, title, categ_id, description } = req.body;
+            console.log(String((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname));
             yield prisma.items.update({
                 where: {
-                    id: Number(id)
+                    id: Number(id),
                 },
                 data: {
                     title,
-                    image,
+                    image: String((_b = req.file) === null || _b === void 0 ? void 0 : _b.originalname),
+                    category: {
+                        connect: {
+                            id: Number(categ_id)
+                        }
+                    },
                     description,
                 }
             });
-            res.redirect('/');
+            res.redirect('/items');
         });
     }
 }

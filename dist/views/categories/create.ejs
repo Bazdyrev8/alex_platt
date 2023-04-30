@@ -1,0 +1,23 @@
+<%- include('../particles/navigation_book.ejs') %>
+<div class="form">
+
+    <div class="tab-content">
+        <h2>Существующие категории</h2>
+        <% for (let i = 0; i < categories.length; i++) { %>
+
+            <p class="section__title"><%=categories.title%></p>
+            
+    
+        <% } %>
+        <h2>Создание категории</h2>
+        <form action="/create_categ" enctype="multipart/form-data" method="post">
+            <div class="field-wrap">
+                <label class="form-group__label" for="title"></label>
+                <input type="text" id="title" name="title" required autocomplete="off" placeholder="title" />
+            </div>
+            <button class="button button-block" type="submit" value="Создать">Создать</button>
+        </form>
+    </div>
+
+</div>
+<%- include('../particles/footer.ejs') %>

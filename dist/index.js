@@ -38,7 +38,7 @@ app.get("", (req, res) => {
 app.get("/items", (req, res) => {
     itemsController.index(req, res);
 });
-app.get("/items/category", (req, res) => {
+app.get("/items/category/:id", (req, res) => {
     itemsController.category(req, res);
 });
 app.get("/items/:id", (req, res) => {
@@ -47,10 +47,16 @@ app.get("/items/:id", (req, res) => {
 app.get("/items/action/create", (req, res) => {
     itemsController.create(req, res);
 });
+app.get("/categories/create", (req, res) => {
+    itemsController.createCategPage(req, res);
+});
+app.post("/categories/action/create", (req, res) => {
+    itemsController.createCateg(req, res);
+});
 app.post("/store", upload.single('file'), (req, res, next) => {
     itemsController.store(req, res);
 });
-app.post("/update", (req, res) => {
+app.post("/update", upload.single('file'), (req, res) => {
     itemsController.update(req, res);
 });
 app.post("/destroy", (req, res) => {
@@ -86,15 +92,9 @@ app.get("/destroy_account", (req, res) => {
 app.get("/create_admin", (req, res) => {
     authController.createAdmin(req, res);
 });
-// app.post("/create_admin", (req: Request, res: Response) =>{
-//   authController.createAdmin(req,res);
-// });
 app.post("/create_admin", (req, res) => {
     authController.createAdminAccount(req, res);
 });
-// app.get("/create_adminAccount", (req:Request, res:Response) =>{
-//   authController.createAdminAccount(req, res);
-// });
 app.post("/logout", (req, res) => {
     authController.logout(req, res);
 });

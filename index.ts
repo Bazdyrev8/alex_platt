@@ -18,7 +18,7 @@ app.use(session({ secret: "Secret", resave: false, saveUninitialized: true }));
 
 declare module "express-session" {
   interface SessionData {
-    auth: boolean,
+    auth: boolean,  
     username: String,
     password: String,
     admin: boolean,
@@ -49,7 +49,7 @@ app.get("/items", (req: Request, res: Response) => {
   itemsController.index(req, res);
 });
 
-app.get("/items/category", (req: Request, res: Response) => {
+app.get("/items/category/:id", (req: Request, res: Response) => {
   itemsController.category(req, res);
 });
 
@@ -61,11 +61,19 @@ app.get("/items/action/create", (req: Request, res: Response) => {
   itemsController.create(req, res);
 });
 
+app.get("/categories/create", (req: Request, res: Response) => {
+  itemsController.createCategPage(req, res);
+});
+
+app.post("/categories/action/create", (req: Request, res: Response) => {
+  itemsController.createCateg(req, res);
+});
+
 app.post("/store", upload.single('file'), (req: Request, res: Response, next) => {
     itemsController.store(req, res);
 });
 
-app.post("/update", (req: Request, res: Response) => {
+app.post("/update", upload.single('file'), (req: Request, res: Response) => {
   itemsController.update(req, res);
 });
 
@@ -113,17 +121,9 @@ app.get("/create_admin", (req: Request, res: Response) => {
   authController.createAdmin(req, res);
 });
 
-// app.post("/create_admin", (req: Request, res: Response) =>{
-//   authController.createAdmin(req,res);
-// });
-
 app.post("/create_admin", (req: Request, res: Response) => {
   authController.createAdminAccount(req, res);
 });
-
-// app.get("/create_adminAccount", (req:Request, res:Response) =>{
-//   authController.createAdminAccount(req, res);
-// });
 
 app.post("/logout", (req: Request, res: Response) => {
   authController.logout(req, res);

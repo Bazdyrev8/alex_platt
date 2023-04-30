@@ -16,26 +16,23 @@
 
         <div class="tab-content">
             <h2>Редактирование</h2>
-            <form action="/update" method="post">
+            <form action="/update" enctype="multipart/form-data" method="post">
                 <input value="<%= item.id %>" type="hidden" id="id" name="id">
 
                 <div class="field-wrap">
                     <label class="form-group__label" for="title">
-
                     </label>
                     <input value="<%= item.title %>" type="text" id="title" name="title" required autocomplete="off" placeholder="title" />
                 </div>
 
                 <div class="field-wrap">
                     <label class="form-group__label" for="image">
-
                     </label>
-                    <input  value="<%= item.image %>" type="text" id="image" name="image" required autocomplete="off" placeholder="image" />
+                    <input  value="<%= item.image %>" type="file" id="file" name="file" required autocomplete="off" placeholder="image" />
                 </div>
 
                 <div class="field-wrap">
                     <label class="form-group__label" for="image">
-
                     </label>
                     <input value="<%= item.description %>" type="text" id="description" name="description" required autocomplete="off" placeholder="description" />
                 </div>
@@ -47,13 +44,14 @@
                             <option value="<%= categories[i].id %>" class="option-categ">
                                 <%= categories[i].title %>
                             </option>
-                            <% } %>
+                        <% } %>
                     </select>
                 </div>
                 <button class="button button-block" type="submit" value="Обновить">Обновить</button>
             </form>
             <form action="/destroy" method="post" class="center">
                 <input value="<%= item.id %>" type="hidden" id="id" name="id">
+                <input value="<%= item.image %>" type="hidden" id="id" name="image">
                 <button class="button button-block" type="submit" value="Удалить">Удалить</button>
             </form>
         </div>

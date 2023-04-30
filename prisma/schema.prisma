@@ -15,14 +15,22 @@ model items {
   title String @db.VarChar(255)
   image String @db.VarChar(255)
   description String @db.VarChar(2000)
-  category categories @relation(fields: [categ_id], references: [id])
-  categ_id Int
+  genres ItemsOnGenres[]
 }
 
-model categories {
+model genre {
   id    Int    @id @default(autoincrement())
   title String @db.VarChar(255)
-  items items[]
+  items ItemsOnGenres[]
+}
+
+model ItemsOnGenres{
+ item       items     @relation(fields: [itemId], references: [id])  
+ itemId      Int
+ genre       genre     @relation(fields: [genreId], references: [id])
+ genreId     Int
+
+ @@id([itemId, genreId])
 }
 
 model users {
@@ -35,8 +43,8 @@ model users {
   
 }
 
-model status {
-  id    Int    @id @default(autoincrement())
-  title String @db.VarChar(255)
-  // users users[]
-}
+// model status {
+//   id    Int    @id @default(autoincrement())
+//   title String @db.VarChar(255)
+//   // users users[]
+// }
