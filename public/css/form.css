@@ -219,6 +219,14 @@ textarea:focus {
   margin: 5px 0 5px;
 }
 
+.deleteComment{
+  padding: 8px 5px;
+  font-size: 14px;
+  margin: 0px 5px;
+}
+
+
+
 .forgot {
   margin-top: -20px;
   text-align: right;

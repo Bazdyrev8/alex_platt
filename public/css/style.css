@@ -68,7 +68,7 @@ h1.logo_a {
 .shell {
   background-color: rgba(180, 180, 180, 0.85);
   width: 80%;
-  min-height: 800px;
+  min-height: 900px;
   /* height: auto; */
   display: inline-block;
   /* vertical-align: middle; */
@@ -129,6 +129,7 @@ a.link {
   font-size: 25px;
   text-decoration-line: none;
 }
+
 
 .section {
   margin-left: 10px;

@@ -42,20 +42,22 @@
             <div class="form">
                 <%for(let i=0; i < comment.length; i++){%>
                     <form action="/deleteComment" method="post">
-                        <p class="author"><%= comment[i].author %></p>
-                        <p class="description" for="description">
-                            <%= comment[i].description %>
-                        </p>
-
                         <input value="<%= comment[i].id %>" type="hidden" id="id" name="commentId">
                         <input value="<%= comment[i].author %>" type="hidden" id="id" name="author">
                         <label class="form-group__label" for="description">
                         </label>
                         <input value="<%= comment[i].description %>" type="hidden" id="id" name="description">
                         <input value="<%= item.id %>" type="hidden" id="id" name="itemId">
-                        <%if(admin || user == comment[i].author){%>
-                        <button class="button button-block" type="submit">Удалить</button>
-                        <%}%>
+
+                        <p class="author"><%= comment[i].author %>
+                            
+                        </p>
+                        <p class="description" for="description">
+                            <%= comment[i].description %>
+                            <%if(admin || user == comment[i].author){%>
+                                <button class="deleteComment button" type="submit">Удалить</button>
+                            <%}%>
+                        </p>
                     </form>
                 <%}%>
             </div>
