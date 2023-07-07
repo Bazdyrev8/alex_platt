@@ -107,6 +107,12 @@
   outline: 0;
   border-color: rgb(80,80,80);
 }
+  input.checkbox{
+  display: inline;
+  font-size: 20px;
+  width: 25px;
+  padding: 0px;
+} 
  textarea {
   border: 2px solid #a0b3b0;
   resize: vertical;

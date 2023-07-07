@@ -1,11 +1,6 @@
 <%- include('../particles/navigation_book.ejs') %>
 
-<% for(let i = 1; i <= number; i++){ %>
-        <button onclick="document.location='?page=<%= i %>'" class="form-button" type="submit">
-            страница<%= i %> 
-        </button>
-
-<%} %>
+<h3>Избранное</h3>
 
 <br>
     <% for (let i=0; i < items.length; i++) { %>

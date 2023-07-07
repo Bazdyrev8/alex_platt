@@ -1,5 +1,4 @@
 <%- include('particles/navigation_home.ejs') %>
-    <!-- <div class="center"> -->
     <div class="form">
 
         <ul class="tab-group">
@@ -18,6 +17,8 @@
                         <%=username%>
                     </p>
             </div>
+
+            <a href="/favorites" class="button">Избранное</a>
 
             <form action="/update_password" method="post">
                 <h2>Смена пароля</h2>
@@ -41,7 +42,7 @@
                 <%}%>
                 <button type="submit" class="button button-block">Обновить</button>
             </form>
-            <form action="/destroy_account" mrtod="post">
+            <form action="/destroy_account" mrtod="get">
                 <h2>Удаление аккаунта</h2>
                 <div class="field-wrap">
                     <h5>Текущий пароль</h5>

@@ -1,61 +1,113 @@
 <%- include('../particles/navigation_book.ejs') %>
 
-<div class="shell_book">
-    <div class="section" >
-        <h2 class="section__title">
-            <%= item.title %>
-        </h2>
-        <img class="section__image" src="/img/<%= item.image %>">
-    </div>
+    <div class="shell_book">
+        <div class="section">
+            <h2 class="section__title">
+                <%= item.title %>
+            </h2>
+            <img class="section__image" src="/img/<%= item.image %>">
+        </div>
 
-    <p><%= item.description %></p>
-
-</div>
-<%if(admin){%>
-    <div class="form">
-
-        <div class="tab-content">
-            <h2>Редактирование</h2>
-            <form action="/update" enctype="multipart/form-data" method="post">
+        <p>
+            <%= item.description %>
+        </p>
+        <%if(favoritStatus==1){%>
+            <form action="/toFavorites" method="post">
                 <input value="<%= item.id %>" type="hidden" id="id" name="id">
-
-                <div class="field-wrap">
-                    <label class="form-group__label" for="title">
-                    </label>
-                    <input value="<%= item.title %>" type="text" id="title" name="title" required autocomplete="off" placeholder="title" />
-                </div>
-
-                <div class="field-wrap">
-                    <label class="form-group__label" for="image">
-                    </label>
-                    <input  value="<%= item.image %>" type="file" id="file" name="file" required autocomplete="off" placeholder="image" />
-                </div>
-
-                <div class="field-wrap">
-                    <label class="form-group__label" for="image">
-                    </label>
-                    <input value="<%= item.description %>" type="text" id="description" name="description" required autocomplete="off" placeholder="description" />
-                </div>
-
-                <div class="form-group" class="center">
-                    <label class="form-group__label" for="description"></label>
-                    <select name="categ_id" class="center">
-                        <% for (let i=0; i < categories.length; i++) { %>
-                            <option value="<%= categories[i].id %>" class="option-categ">
-                                <%= categories[i].title %>
-                            </option>
-                        <% } %>
-                    </select>
-                </div>
-                <button class="button button-block" type="submit" value="Обновить">Обновить</button>
+                <button class="button button-block" type="submit" value="AddtoFavorites">Добавить в избранное</button>
             </form>
-            <form action="/destroy" method="post" class="center">
-                <input value="<%= item.id %>" type="hidden" id="id" name="id">
-                <input value="<%= item.image %>" type="hidden" id="id" name="image">
-                <button class="button button-block" type="submit" value="Удалить">Удалить</button>
+            <%}%>
+                <%if(favoritStatus==2){%>
+                    <form action="/deleteFavorit" method="post">
+                        <input value="<%= item.id %>" type="hidden" id="id" name="id">
+                        <button class="button button-block" type="submit" value="AddtoFavorites">Удалить из
+                            избранных</button>
+                    </form>
+                    <%}%>
+    </div>
+    <div class="shell_comments">
+        <h3>Комментарии к книге</h3>
+        <div class="form">
+            <form action="/createComment" method="post">
+                <label class="form-group__label" for="description">
+                </label>
+                <textarea type="text" id="description" name="description" required autocomplete="off"
+                    placeholder="description" minlength="5" maxlength="1024"></textarea>
+                <input value="<%= item.id %>" type="hidden" id="id" name="itemId" />
+                <button class="button button-block" type="submit">Добавить</button>
             </form>
         </div>
 
+        <%if(comment.length !=0){%>
+            <div class="form">
+                <%for(let i=0; i < comment.length; i++){%>
+                    <form action="/deleteComment" method="post">
+                        <p class="author"><%= comment[i].author %></p>
+                        <p class="description" for="description">
+                            <%= comment[i].description %>
+                        </p>
+
+                        <input value="<%= comment[i].id %>" type="hidden" id="id" name="commentId">
+                        <input value="<%= comment[i].author %>" type="hidden" id="id" name="author">
+                        <label class="form-group__label" for="description">
+                        </label>
+                        <input value="<%= comment[i].description %>" type="hidden" id="id" name="description">
+                        <input value="<%= item.id %>" type="hidden" id="id" name="itemId">
+                        <%if(admin || user == comment[i].author){%>
+                        <button class="button button-block" type="submit">Удалить</button>
+                        <%}%>
+                    </form>
+                <%}%>
+            </div>
+        <%}%>
+
     </div>
-<%}%>
-<%- include('../particles/footer.ejs') %>
+    <%if(admin){%>
+        <div class="form">
+            <div class="tab-content">
+                <h2>Редактирование</h2>
+                <form action="/update" enctype="multipart/form-data" method="post">
+                    <input value="<%= item.id %>" type="hidden" id="id" name="id">
+
+                    <div class="field-wrap">
+                        <label class="form-group__label" for="title">
+                        </label>
+                        <input value="<%= item.title %>" type="text" id="title" name="title" required autocomplete="off"
+                            placeholder="title" />
+                    </div>
+
+                    <div class="field-wrap">
+                        <label class="form-group__label" for="image">
+                        </label>
+                        <input value="<%= item.image %>" type="file" id="file" name="file" required autocomplete="off"
+                            placeholder="image" />
+                    </div>
+
+                    <div class="field-wrap">
+                        <label class="form-group__label" for="image">
+                        </label>
+                        <textarea type="text" id="description" name="description" required
+                            autocomplete="off" placeholder="description"><%= item.description %></textarea>
+                    </div>
+
+                    <div class="form-group" class="center">
+                        <label class="form-group__label" for="description"></label>
+                        <select name="categ_id" class="center">
+                            <% for (let i=0; i < categories.length; i++) { %>
+                                <option value="<%= categories[i].id %>" class="option-categ">
+                                    <%= categories[i].title %>
+                                </option>
+                                <% } %>
+                        </select>
+                    </div>
+                    <button class="button button-block" type="submit" value="Обновить">Обновить</button>
+                </form>
+                <form action="/destroy" method="post" class="center">
+                    <input value="<%= item.id %>" type="hidden" id="id" name="id">
+                    <input value="<%= item.image %>" type="hidden" id="id" name="image">
+                    <button class="button button-block" type="submit" value="Удалить">Удалить</button>
+                </form>
+            </div>
+        </div>
+        <%}%>
+            <%- include('../particles/footer.ejs') %>

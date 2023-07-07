@@ -5,7 +5,7 @@ import multer from 'multer';
 import path from 'path';
 import * as fs from 'node:fs';
 const prisma: PrismaClient = new PrismaClient();
-// const fs = require('fs');
+
 export class ItemsController {
 
     home(req: Request, res: Response) {
@@ -14,17 +14,19 @@ export class ItemsController {
         });
     }
     async index(req: Request, res: Response) {
+        let numItems = 8;
         let page = Number(req.query.page); // localhost?page=4
         const count = await prisma.items.count({
         })
-        let pages = Math.ceil(count / 4);
+        let pages = Math.ceil(count / numItems);
         if (!page) page = 1;
         if (page > pages) page = pages;
         const items: items[] = await prisma.items.findMany({
-            take: 4,
-            skip: (page - 1) * 4,
+            take: numItems,
+            skip: (page - 1) * numItems,
         })
         const categories = await prisma.categories.findMany();
+
         res.render('items/index', {
             'items': items,
             number: Number(pages),
@@ -63,28 +65,56 @@ export class ItemsController {
     ///!!!!!!!!!!!!!!!!!!
 
     async show(req: Request, res: Response) {
-        const item = await prisma.items.findUnique({
-            where: {
-                id: Number(req.params.id)
+        let favState = 0;
+        if (!Number(req.params.id)) {
+            res.redirect('/items');
+        }
+        if (Number(req.params.id)) {
+            const item = await prisma.items.findUnique({
+                where: {
+                    id: Number(req.params.id)
+                }
+            });
+            if(!req.session.username) favState = 0;
+
+            if (req.session.username) {
+                const userId = await prisma.users.findMany({
+                    where: {
+                        username: req.session.username,
+                    }
+                });
+
+                const favoritStatus = await prisma.favorites.findMany({
+                    where: {
+                        userId: Number(userId[0].id),
+                        itemId: Number(req.params.id),
+                    }
+                });
+
+                if(favoritStatus.length > 0) favState = 2;
+                if(favoritStatus.length == 0) favState = 1;
+
             }
-        });
+            const categories = await prisma.categories.findMany();
 
-        const categories = await prisma.categories.findMany();
+            const comments = await prisma.comments.findMany({
+                where:{
+                    item_id: Number(req.params.id),
+                }
+            });
 
-        res.render('items/show', {
-            'item': item,
-            categories: categories,
-            admin: req.session.admin
-        });
+            res.render('items/show', {
+                favoritStatus: favState,
+                'item': item,
+                categories: categories,
+                admin: req.session.admin,
+                user: req.session.username,
+                'comment': comments,
+            });
+        }
     }
 
     async createCategPage(req: Request, res: Response) {
-        // const item = await prisma.items.findUnique({
-        //     where: {
-        //         id: Number(req.params.id)
-        //     }
-        // });
-
         const categories = await prisma.categories.findMany();
 
         res.render('categories/create', {
@@ -94,15 +124,14 @@ export class ItemsController {
     }
 
     async createCateg(req: Request, res: Response) {
-        const {title} = req.body;
+        const { title } = req.body;
 
-        // const item = await prisma.items.findUnique({
-        //     where: {
-        //         id: Number(req.params.id)
-        //     }
-        // });
-
-        const categories = await prisma.categories.findMany();
+        await prisma.categories.create({
+            data: {
+                title,
+            }
+        });
+        // const categories = await prisma.categories.findMany();
 
         res.redirect('/items');
     }
@@ -122,7 +151,6 @@ export class ItemsController {
     ///!!!!!!!!!!!!!!!!!!
     async store(req: Request, res: Response) {
         const { title, categ_id, description } = req.body;
-        console.log(String(req.file?.originalname));
         await prisma.items.create({
             data: {
                 title,
@@ -133,7 +161,6 @@ export class ItemsController {
                     }
                 },
                 description,
-                // categ_id: Number(categ_id),
             }
         });
 
@@ -142,14 +169,6 @@ export class ItemsController {
     ///!!!!!!!!!!!!!!!!!!
     async destroy(req: Request, res: Response) {
         const { id, image } = req.body;
-        // console.log('___________________');
-        // console.log(image);
-        // console.log('___________________');
-        // let file_delete =  './' + image;
-        // fs.unlink( file_delete, (err:any)=>{
-        //     // if (err) throw err;
-        //     console.log('File deleted!');
-        // });
         await prisma.items.deleteMany({
             where: {
                 id: Number(id)
@@ -160,7 +179,6 @@ export class ItemsController {
 
     async update(req: Request, res: Response) {
         const { id, title, categ_id, description } = req.body;
-        console.log(String(req.file?.originalname));
         await prisma.items.update({
             where: {
                 id: Number(id),
@@ -178,5 +196,27 @@ export class ItemsController {
         });
 
         res.redirect('/items');
+    }
+
+    //Поиск книг
+    async searchItem(req:Request, res:Response){
+
+        const {title} = req.body;
+        const items = await prisma.items.findMany({
+            where: {
+              title: {
+                search: title,
+              },
+            },
+          });
+        
+        const categories = await prisma.categories.findMany();
+
+        res.render('items/index', {
+            'items': items,
+            number: Number(pages),
+            categories: categories,
+            admin: req.session.admin
+        });
     }
 }

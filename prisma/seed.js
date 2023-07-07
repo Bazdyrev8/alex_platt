@@ -80,8 +80,8 @@ async function Items() {
 async function UserAdmin() {
     const createMany = await prisma.users.createMany({
         data: [
-            { username: "Admin" ,
-              password: "Admin1234", 
+            { username: "A" ,
+              password: "A", 
               type: "A" }
         ],
         skipDuplicates: true

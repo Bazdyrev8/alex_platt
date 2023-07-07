@@ -9,9 +9,11 @@ const express_session_1 = __importDefault(require("express-session"));
 const multer_1 = __importDefault(require("multer"));
 const ItemsController_1 = require("./controllers/ItemsController");
 const AuthController_1 = require("./controllers/AuthController");
+const CommentController_1 = require("./controllers/CommentController");
 const app = (0, express_1.default)();
 const itemsController = new ItemsController_1.ItemsController();
 const authController = new AuthController_1.AuthController();
+const commentController = new CommentController_1.CommentController();
 app.use(express_1.default.static('public'));
 app.use(express_1.default.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
@@ -77,24 +79,39 @@ app.post("/auth", (req, res) => {
 app.post("/registration", (req, res) => {
     authController.SignUp(req, res);
 });
-app.post("/update_password", (req, res) => {
-    authController.updatePassword(req, res);
-});
+// app.post("/update_password", (req: Request, res: Response) => {
+//   authController.updatePassword(req, res);
+// });
 app.get("/update_password", (req, res) => {
     authController.updatePassword(req, res);
 });
-app.post("/destroy_account", (req, res) => {
-    authController.destroyAccount(req, res);
-});
+// app.post("/destroy_account", (req: Request, res: Response) => {
+//   authController.destroyAccount(req, res);
+// });
 app.get("/destroy_account", (req, res) => {
     authController.destroyAccount(req, res);
 });
 app.get("/create_admin", (req, res) => {
     authController.createAdmin(req, res);
 });
-app.post("/create_admin", (req, res) => {
-    authController.createAdminAccount(req, res);
+// app.post("/create_admin", (req: Request, res: Response) => {
+//   authController.createAdminAccount(req, res);
+// });
+app.post("/toFavorites", (req, res) => {
+    authController.toFavorites(req, res);
+});
+app.post("/deleteFavorit", (req, res) => {
+    authController.deleteFavorit(req, res);
+});
+app.get("/favorites", (req, res) => {
+    authController.viewFavorites(req, res);
 });
 app.post("/logout", (req, res) => {
     authController.logout(req, res);
+});
+app.post("/createComment", (req, res) => {
+    commentController.createComment(req, res);
+});
+app.post("/deleteComment", (req, res) => {
+    commentController.destroyComment(req, res);
 });

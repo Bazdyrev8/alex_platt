@@ -15,14 +15,14 @@
           <label class="form-group__label" for="text">
 
           </label>
-          <input type="text" id="title" name="username" required autocomplete="off" placeholder="Name" />
+          <input type="text" id="title" name="username" required autocomplete="off" placeholder="Name" minlength="3" maxlength="32"/>
         </div>
 
         <div class="field-wrap">
           <label class="form-group__label" for="password">
 
           </label>
-          <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password" />
+          <input type="password" id="password" name="password" required autocomplete="off" placeholder="Password" minlength="4" maxlength="32"/>
         </div>
 
         <% if (errUsername==1){ %>

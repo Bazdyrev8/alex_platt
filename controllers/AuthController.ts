@@ -84,7 +84,6 @@ export class AuthController {
                 username: username,
             }
         });
-        console.log(selectUsername);
         if (selectUsername.length > 0) {
             req.session.admin = false;
             req.session.auth = false;
@@ -217,9 +216,12 @@ export class AuthController {
     logout(req: Request, res: Response) {
         req.session.auth = false;
         req.session.admin = false;
+        req.session.username = undefined;
         errUsername = 0;
         this.logIn_page(req, res);
     }
+
+    // CREATEAdminAccount
 
     async createAdminAccount(req: Request, res: Response) {
         errUsername = 0;
@@ -257,9 +259,119 @@ export class AuthController {
                     admin: req.session.admin,
                     errUsername: errUsername,
                 });
-        }else{
+        } else {
             res.redirect('/');
         }
         errUsername = 0;
     }
+
+    // AddToFavorites
+
+    async toFavorites(req: Request, res: Response) {
+        const { id } = req.body;
+        const userId = await prisma.users.findMany({
+            where: {
+                username: req.session.username,
+            }
+        });
+
+        const exisfavorites = await prisma.favorites.findMany({
+            where: {
+                userId: Number(userId[0].id),
+                itemId: Number(id),
+            }
+        });
+
+        if (exisfavorites.length == 0) {
+            await prisma.favorites.create({
+                data: {
+                    userId: userId[0].id,
+                    itemId: Number(id),
+                }
+            })
+        }
+
+        res.redirect('/items');
+    }
+
+    async viewFavorites(req: Request, res: Response) {
+        if (!req.session.username) {
+            res.redirect('/items');
+        }
+
+        const userId = await prisma.users.findMany({
+            where: {
+                username: req.session.username,
+            }
+        });
+
+        const favorites = await prisma.users.findMany({
+            where: {
+                id: Number(userId[0].id),
+            },
+            select: {
+                favorites: {
+                    select: {
+                        item: {
+                            select: {
+                                id: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        let arr = [];
+        for (let i = 0; i < favorites[0].favorites.length; i++) {
+            arr.push(favorites[0].favorites[i].item.id)
+        };
+        const items = await prisma.items.findMany({
+            where: {
+                id: {
+                    in: arr,
+                }
+            }
+        });
+
+        const categories = await prisma.categories.findMany({});
+
+        res.render('items/favorites',
+            {
+                auth: req.session.auth,
+                admin: req.session.admin,
+                'categories': categories,
+                'items': items,
+            });
+    }
+
+    async deleteFavorit(req: Request, res: Response) {
+        const { id } = req.body;
+
+        const userId = await prisma.users.findMany({
+            where: {
+                username: req.session.username,
+            }
+        });
+
+        const exisfavorites = await prisma.favorites.findMany({
+            where: {
+                userId: Number(userId[0].id),
+                itemId: Number(id),
+            }
+        });
+
+        if (exisfavorites.length != 0) {
+            await prisma.favorites.deleteMany({
+                where: {
+                    userId: Number(userId[0].id),
+                    itemId: Number(id),
+                }
+            });
+        }
+
+        res.redirect('/items');
+
+
+    }
+
 }

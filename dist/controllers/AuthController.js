@@ -83,7 +83,6 @@ class AuthController {
                     username: username,
                 }
             });
-            console.log(selectUsername);
             if (selectUsername.length > 0) {
                 req.session.admin = false;
                 req.session.auth = false;
@@ -201,9 +200,11 @@ class AuthController {
     logout(req, res) {
         req.session.auth = false;
         req.session.admin = false;
+        req.session.username = undefined;
         errUsername = 0;
         this.logIn_page(req, res);
     }
+    // CREATEAdminAccount
     createAdminAccount(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             errUsername = 0;
@@ -241,6 +242,104 @@ class AuthController {
             res.redirect('/');
         }
         errUsername = 0;
+    }
+    // AddToFavorites
+    toFavorites(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.body;
+            const userId = yield prisma.users.findMany({
+                where: {
+                    username: req.session.username,
+                }
+            });
+            const exisfavorites = yield prisma.favorites.findMany({
+                where: {
+                    userId: Number(userId[0].id),
+                    itemId: Number(id),
+                }
+            });
+            if (exisfavorites.length == 0) {
+                yield prisma.favorites.create({
+                    data: {
+                        userId: userId[0].id,
+                        itemId: Number(id),
+                    }
+                });
+            }
+            res.redirect('/items');
+        });
+    }
+    viewFavorites(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!req.session.username) {
+                res.redirect('/items');
+            }
+            const userId = yield prisma.users.findMany({
+                where: {
+                    username: req.session.username,
+                }
+            });
+            const favorites = yield prisma.users.findMany({
+                where: {
+                    id: Number(userId[0].id),
+                },
+                select: {
+                    favorites: {
+                        select: {
+                            item: {
+                                select: {
+                                    id: true
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            let arr = [];
+            for (let i = 0; i < favorites[0].favorites.length; i++) {
+                arr.push(favorites[0].favorites[i].item.id);
+            }
+            ;
+            const items = yield prisma.items.findMany({
+                where: {
+                    id: {
+                        in: arr,
+                    }
+                }
+            });
+            const categories = yield prisma.categories.findMany({});
+            res.render('items/favorites', {
+                auth: req.session.auth,
+                admin: req.session.admin,
+                'categories': categories,
+                'items': items,
+            });
+        });
+    }
+    deleteFavorit(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.body;
+            const userId = yield prisma.users.findMany({
+                where: {
+                    username: req.session.username,
+                }
+            });
+            const exisfavorites = yield prisma.favorites.findMany({
+                where: {
+                    userId: Number(userId[0].id),
+                    itemId: Number(id),
+                }
+            });
+            if (exisfavorites.length != 0) {
+                yield prisma.favorites.deleteMany({
+                    where: {
+                        userId: Number(userId[0].id),
+                        itemId: Number(id),
+                    }
+                });
+            }
+            res.redirect('/items');
+        });
     }
 }
 exports.AuthController = AuthController;
