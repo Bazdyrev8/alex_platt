@@ -34,15 +34,25 @@ p.errUsername {
   text-align: justify;
 } */
 
+.search{
+  background-color: #000000;
+  display: inline;
+  width: 30%;
+}
+
 .logo {
-  background-color: rgba(12, 18, 30, 1);
+  background-color: rgb(12, 18, 30);
   width: 100%;
   min-height: 50px;
   display: inline-block;
   text-align: center;
 }
 
-a.logo_a {
+.logo div.a{
+  width: 70%;
+}
+
+.logo a {
   margin-top: 80px;
   margin-left: 20px;
   margin-right: 20px;

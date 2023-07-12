@@ -75,7 +75,7 @@ export class ItemsController {
                     id: Number(req.params.id)
                 }
             });
-            if(!req.session.username) favState = 0;
+            if (!req.session.username) favState = 0;
 
             if (req.session.username) {
                 const userId = await prisma.users.findMany({
@@ -91,14 +91,14 @@ export class ItemsController {
                     }
                 });
 
-                if(favoritStatus.length > 0) favState = 2;
-                if(favoritStatus.length == 0) favState = 1;
+                if (favoritStatus.length > 0) favState = 2;
+                if (favoritStatus.length == 0) favState = 1;
 
             }
             const categories = await prisma.categories.findMany();
 
             const comments = await prisma.comments.findMany({
-                where:{
+                where: {
                     item_id: Number(req.params.id),
                 }
             });
@@ -199,22 +199,24 @@ export class ItemsController {
     }
 
     //Поиск книг
-    async searchItem(req:Request, res:Response){
-
-        const {title} = req.body;
+    async searchItem(req: Request, res: Response) {
+        console.log("______");
+        const { title } = req.body;
+        console.log(title);
         const items = await prisma.items.findMany({
             where: {
-              title: {
-                search: title,
-              },
+                title: {
+                    contains: String(title),
+                },
             },
-          });
-        
+        });
+
+        console.log(items);
         const categories = await prisma.categories.findMany();
 
         res.render('items/index', {
             'items': items,
-            number: Number(pages),
+            number: 1,
             categories: categories,
             admin: req.session.admin
         });

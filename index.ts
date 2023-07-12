@@ -150,3 +150,7 @@ app.post("/createComment", (req: Request, res: Response) => {
 app.post("/deleteComment", (req: Request, res: Response) => {
   commentController.destroyComment(req, res);
 });
+
+app.post("/search", (req: Request, res: Response) => {
+  itemsController.searchItem(req, res);
+});

@@ -115,3 +115,6 @@ app.post("/createComment", (req, res) => {
 app.post("/deleteComment", (req, res) => {
     commentController.destroyComment(req, res);
 });
+app.post("/search", (req, res) => {
+    itemsController.searchItem(req, res);
+});
